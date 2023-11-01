@@ -1,0 +1,199 @@
+﻿@model ProductVM
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0  py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">
+                    @(Model.Product.ProductId != 0 ? "Update" : "Create") Product
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="Product.ProductId" hidden />
+            <div class="border p-5 row">
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Product.Title" class="form-control border-0 shadow" />
+                    <label asp-for="Product.Title" class="ms-2"></label>
+                    <span asp-validation-for="Product.Title" class="text-danger"></span>
+                </div>
+                @if (Model.Product.ProductId != 0)
+                {
+                    <div class="form-floating py-2 col-6 ">
+                        <input type="file" name="file" class="form-control border-0 shadow" />
+                        <label class="ms-2">Cover Image</label>
+                    </div>
+                    <div class="col-6  imgcontainer border-0 shadow">
+                        <img src="@Model.CoverImage" class="imageurl" style="width:200px; height:300px" onclick="ImageFocus(this.src)" />
+                    </div>
+                }
+                else
+                {
+                    <div class="form-floating py-2 col-6 ">
+                        <input type="file" name="file" class="form-control border-0 shadow" />
+                        <label class="ms-2">Cover Image</label>
+                    </div>
+                }
+                <div class="form-floating py-2 col-12">
+                    <label asp-for="Product.Description" class="ms-1 deslabl py-3"></label><br />
+                    <textarea id="div_editor1" asp-for="Product.Description" class="form-control border-0 shadow"></textarea>
+                    <span id="descriptionValidate" asp-validation-for="Product.Description" class="text-danger"></span>
+                </div>
+                @* <input asp-for="Product.ImageUrl" hidden /> *@
+                @if (Model.Product.ProductId != 0)
+                {
+                    <div class="row mx-1">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="form-floating py-2 row  ">
+                                    <input asp-for="Product.ISBN" class="form-control border-0 shadow" />
+                                    <label asp-for="Product.ISBN" class="ms-2"></label>
+                                    <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating py-2 row ">
+                                    <input asp-for="Product.Author" class="form-control border-0 shadow" />
+                                    <label asp-for="Product.Author" class="ms-2"></label>
+                                    <span asp-validation-for="Product.Author" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating py-2 row ">
+                                    <select asp-for="Product.CategoryID" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
+                                        <option disabled selected>Select Category</option>
+                                    </select>
+                                    <label asp-for="Product.CategoryID" class="ms-2"></label>
+                                    <span asp-validation-for="Product.CategoryID" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating py-2 row ">
+                                    <input type="file" name="files" multiple class="form-control border-0 shadow" />
+                                    <label asp-for="Product.ProductImages" class="ms-2"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                @foreach (var imagesrc in Model.Product.ProductImages)
+                                {
+                                    if (@imagesrc.CoverImage == "NOCV")
+                                    {
+                                        <div class="col-6  ps-3 pt-3 text-center">
+                                            <div class="row form-control border-0 shadow">
+                                                <img src="@imagesrc.ImageUrl" class="imageurl" onclick="ImageFocus(this.src)" />
+                                            </div>
+                                            <div class="row text-center">
+                                                <a asp-action="DeleteImage" class="btn btn-danger" style="width:40px; margin-left:40px;" asp-route-strImgetype="IMG" asp-route-imageId="@imagesrc.ProuctImageId">
+                                                    <i class="bi bi-folder-minus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row mx-1 px-0">
+                        <div class="form-floating py-2 col-6  ">
+                            <input asp-for="Product.ISBN" class="form-control border-0 shadow" />
+                            <label asp-for="Product.ISBN" class="ms-2"></label>
+                            <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-6  ">
+                            <input asp-for="Product.Author" class="form-control border-0 shadow" />
+                            <label asp-for="Product.Author" class="ms-2"></label>
+                            <span asp-validation-for="Product.Author" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-6  ">
+                            <select asp-for="Product.CategoryID" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
+                                <option disabled selected>Select Category</option>
+                            </select>
+                            <label asp-for="Product.CategoryID" class="ms-2"></label>
+                            <span asp-validation-for="Product.CategoryID" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating py-2 col-6 ">
+                            <input type="file" name="files" multiple class="form-control border-0 shadow" />
+                            <label asp-for="Product.ProductImages" class="ms-2"></label>
+                        </div>
+                    </div>
+                }
+                <div class="row mx-1 px-0">
+                    <div class="form-floating py-2 col-6 ">
+                        <input asp-for="Product.ListPrice" class="form-control border-0 shadow" />
+                        <label asp-for="Product.ListPrice" class="ms-2"></label>
+                        <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-6  ">
+                        <input asp-for="Product.Price" class="form-control border-0 shadow" />
+                        <label asp-for="Product.Price" class="ms-2"></label>
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-6 ">
+                        <input asp-for="Product.Price50" class="form-control border-0 shadow" />
+                        <label asp-for="Product.Price50" class="ms-2"></label>
+                        <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating py-2 col-6 ">
+                        <input asp-for="Product.Price100" class="form-control border-0 shadow" />
+                        <label asp-for="Product.Price100" class="ms-2"></label>
+                        <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        @if (Model.Product.ProductId != 0)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Update <i class="bi  bi-arrow-down-up"></i></button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Create <i class="bi bi-save"></i></button>
+                        }
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary border form-control">
+                            <i class="bi bi-card-list"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="myNav" class="overlay">
+                <div class="overlay-content">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <img id="imgShow" style="width:50%; height:50%;" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* use for client side validation add partial which is defauld given by VS *@
+@* its script that why we added this way unless we can use partial directly in chtml *@
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/js/rte.js" asp-append-version="true"></script>
+    <script src="~/js/all_plugins.js" asp-append-version="true"></script>
+    <script>
+        var editor1 = new RichTextEditor("#div_editor1");
+        //editor1.setHTMLCode("Use inline HTML or setHTMLCode to init the default content.");
+    </script>
+
+    <script type="text/javascript">
+        function ImageFocus(src) {
+            // alert(src);
+            document.getElementById("myNav").style.display = "block";
+            document.getElementById("imgShow").src = src;
+        }
+        function closeNav() {
+            document.getElementById("myNav").style.display = "none";
+        }
+    </script>
+
+
+
+}

@@ -1,0 +1,29 @@
+﻿@page
+@model LockoutModel
+@{
+    ViewData["Title"] = "Locked out";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0  py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">
+                    Locked out
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <h1 class="text-danger">@ViewData["Title"]</h1>
+                    <p class="text-danger">This account has been locked out, please try again later.</p>
+                    <p class="text-danger">or</p>
+                    <p class="text-danger">Please contact administration.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

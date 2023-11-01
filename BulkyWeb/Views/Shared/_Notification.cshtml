@@ -1,0 +1,23 @@
+﻿<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/toastr.min.js" asp-append-version="true"></script>
+@if (TempData["success"] != null)
+{ 
+    <script type="text/javascript">
+        @* alert('@TempData["success"]'); *@
+        toastr.success('@TempData["success"]');
+    </script>
+}
+@if (TempData["error"] != null)
+{    
+    <script type="text/javascript">
+        @* alert('@TempData["error"]'); *@
+            toastr.error('@TempData["error"]');
+    </script>
+}
+@if (TempData["info"] != null)
+{
+    <script type="text/javascript">
+        @* alert('@TempData["error"]'); *@
+            toastr.info('@TempData["info"]');
+    </script>
+}
